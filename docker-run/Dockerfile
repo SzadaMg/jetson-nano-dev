@@ -48,3 +48,6 @@ RUN pip3 install pyqt5
 #https://github.com/enthought/mayavi/issues/1325
 RUN pip3 install numpy==1.24.4 vtk==9.3.0
 RUN pip3 install mayavi --no-cache-dir --verbose  --no-build-isolation
+
+RUN wget -qO- https://apt.llvm.org/llvm.sh | bash -s -- 19 && \
+    apt-get install -y clang-tidy-19
