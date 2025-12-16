@@ -28,7 +28,7 @@ then
     ENABLE_CUDA="ON"
     DOCKER_FILE="docker-build/Dockerfile"
     VARIANT_TAG="-build"
-    JETPACK_RELEASE=r32.6
+    JETPACK_RELEASE=r32.7
     TEGRA_VERSION="t210"
     ARM_DOCKER_PLATFORM="--platform=linux/arm64"
 
@@ -46,7 +46,7 @@ then
     ENABLE_CUDA="ON"
     DOCKER_FILE="docker-build/Dockerfile"
     VARIANT_TAG="-build"
-    JETPACK_RELEASE=r36.2
+    JETPACK_RELEASE=r36.4
     TEGRA_VERSION="t234"
     ARM_DOCKER_PLATFORM="--platform=linux/arm64"
 
@@ -89,7 +89,7 @@ then
     OPENCV_VERSION="4.7.0"
 elif [ $UBUNTU_VERSION == "22" ]
 then
-    OPENCV_VERSION="4.10.0"
+    OPENCV_VERSION="4.12.0"
 fi
 
 if [[ $DOCKER_COMMAND == "build" ]]

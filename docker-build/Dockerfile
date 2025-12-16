@@ -46,7 +46,7 @@ RUN if [ ${ENABLE_CUDA} = "ON" ]; then \
     echo "deb https://repo.download.nvidia.com/jetson/common ${JETPACK_RELEASE} main" > /etc/apt/sources.list.d/nvidia-l4t-apt-source.list && \
     echo "deb https://repo.download.nvidia.com/jetson/${TEGRA_VERSION} ${JETPACK_RELEASE} main" >> /etc/apt/sources.list.d/nvidia-l4t-apt-source.list && \
     apt-get update && \
-    wget http://http.us.debian.org/debian/pool/main/libf/libffi/libffi6_3.2.1-9_arm64.deb && \
+    wget https://old-releases.ubuntu.com/ubuntu/pool/main/libf/libffi/libffi6_3.2.1-9_arm64.deb && \
     dpkg -i libffi6_3.2.1-9_arm64.deb && \
     rm libffi6_3.2.1-9_arm64.deb && \
     rm -rf /var/lib/apt/lists/* \
@@ -70,13 +70,13 @@ RUN if [ ${ENABLE_CUDA} = "ON" ]; then \
     ;fi
 
 # install a more recent cmake from source
-RUN wget https://github.com/Kitware/CMake/releases/download/v3.23.3/cmake-3.23.3.tar.gz && \
-    tar -zxvf cmake-3.23.3.tar.gz && \
-    cd cmake-3.23.3 && \
-    ./bootstrap --parallel=$(nproc) && \
-    make -j$(nproc) && \
-    make install && \
-    rm -rf /opt/cmake*
+ENV CMAKE_VERSION="3.28.3"
+RUN wget https://github.com/Kitware/CMake/releases/download/v${CMAKE_VERSION}/cmake-${CMAKE_VERSION}.tar.gz \
+    && tar -xvf cmake-${CMAKE_VERSION}.tar.gz \
+    && cd cmake-${CMAKE_VERSION} \
+    && ./bootstrap -- -DCMAKE_BUILD_TYPE:STRING=Release \
+    && make -j$(nproc) \
+    && make install
 
 ENV CUDA_HOME="/usr/local/cuda"
 ENV PATH="/usr/local/cuda/bin:${PATH}"
@@ -90,10 +90,10 @@ RUN if [ ${ENABLE_CUDA} = "ON" ]; then \
     ;fi
 
 RUN if [ ${ENABLE_CUDA} = "ON" ]; then \
-    if [ ${JETPACK_RELEASE} = "r32.6" ]; then \
+    if [ ${JETPACK_RELEASE} = "r32.7" ]; then \
     apt-get update && \
     apt-get install -y g++-8 gcc-8 && \
-    apt-get install -y cuda-toolkit-10-2 tensorrt &&\
+    apt-get install -y cuda-toolkit-10-2 tensorrt=8.2.1.9-1+cuda10.2 &&\
     export CC="/usr/bin/gcc-8" && \
     export CXX="/usr/bin/g++-8" && \
     echo "CC=/usr/bin/gcc-8" >> /etc/environment && \
@@ -102,9 +102,9 @@ RUN if [ ${ENABLE_CUDA} = "ON" ]; then \
     ln -fs $CC /usr/bin/cc && \
     ln -fs $CXX /usr/bin/g++ && \
     ln -fs $CXX /usr/bin/c++ \
-    ;elif [ ${JETPACK_RELEASE} = "r36.2" ]; then \
+    ;elif [ ${JETPACK_RELEASE} = "r36.4" ]; then \
     apt-get update  && \
-    apt-get install -y cuda-toolkit-12-2 tensorrt nvidia-l4t-dla-compiler \
+    apt-get install -y cuda-toolkit-12-2 tensorrt=10.3.0.30-1+cuda12.5 nvidia-l4t-dla-compiler \
     ;else \
     echo "Invalid jetpack release ${JETPACK_RELEASE}" && \
     exit -1 \
