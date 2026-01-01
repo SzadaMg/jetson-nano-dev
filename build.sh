@@ -13,11 +13,6 @@ fi
 
 if [ $ARCH == "arm" ]
 then
-    # if [ ! -z $VARIANT_OPT ]
-    # then
-    #     echo "Invalid positional parameter: ${VARIANT_OPT}"
-    #     exit 1
-    # fi
     if [ $UBUNTU_VERSION == "20" ]
     then
         BASE="arm64v8/ubuntu:20.04"
@@ -25,7 +20,6 @@ then
         echo "Wrong ubuntu version:" $UBUNTU_VERSION
         exit 1
     fi
-    ENABLE_CUDA="ON"
     DOCKER_FILE="docker-build/Dockerfile"
     VARIANT_TAG="-build"
     JETPACK_RELEASE=r32.7
@@ -43,7 +37,6 @@ then
         echo "Wrong ubuntu version:" $UBUNTU_VERSION
         exit 1
     fi
-    ENABLE_CUDA="ON"
     DOCKER_FILE="docker-build/Dockerfile"
     VARIANT_TAG="-build"
     JETPACK_RELEASE=r36.4
@@ -52,9 +45,9 @@ then
 
 elif [ $ARCH == "x86" ]
 then
-    if [ $UBUNTU_VERSION == "20" ]
+    if [ $UBUNTU_VERSION == "22" ]
     then
-        BASE="ubuntu:20.04"
+        BASE="nvcr.io/nvidia/tensorrt:24.08-py3"
     else
         echo "Wrong ubuntu version:" $UBUNTU_VERSION
         exit 1
@@ -76,7 +69,6 @@ then
     fi
 
     DOCKER_FILE="docker${VARIANT_TAG}/Dockerfile"
-    ENABLE_CUDA="OFF"
 
 else
     echo "Wrong architecture:" $ARCH
@@ -96,7 +88,6 @@ if [[ $DOCKER_COMMAND == "build" ]]
 then
     docker buildx  --debug build $ARM_DOCKER_PLATFORM \
         --build-arg BASE=$BASE \
-        --build-arg ENABLE_CUDA=$ENABLE_CUDA \
         --build-arg ARCH=$ARCH \
         --build-arg JETPACK_RELEASE=$JETPACK_RELEASE \
         --build-arg TEGRA_VERSION=$TEGRA_VERSION \
