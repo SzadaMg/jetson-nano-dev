@@ -8,6 +8,7 @@ Docker-based build and runtime environments for NVIDIA Jetson platforms, optimiz
 - **CMake** 3.31.2
 - **OpenCV** 4.7.0 with CUDA acceleration (compute 5.3, 7.5)
 - **Intel RealSense** 2.53 with CUDA support (compute 5.3, 7.5)
+- **ZED SDK** 4.2 with cuda support
 - **CUDA Toolkit** 10.2
 - **cuDNN** 8
 - **TensorRT** 8.2.1
@@ -18,7 +19,8 @@ Docker-based build and runtime environments for NVIDIA Jetson platforms, optimiz
 - **CMake** 3.31.2
 - **OpenCV** 4.12.0 with CUDA acceleration (compute 5.3, 7.5, 8.0, 8.6, 8.9)
 - **Intel RealSense** 2.53 with CUDA support (compute 5.3, 7.5, 8.0, 8.6, 8.9)
-- **CUDA Toolkit** 12.2
+- **ZED SDK** 5.1 with cuda support
+- **CUDA Toolkit** 12.6
 - **cuDNN** 9
 - **TensorRT** 10.3.0
 - **Tiny-TensorRT** (supports compute 5.3, 7.5, 8.0, 8.6)
