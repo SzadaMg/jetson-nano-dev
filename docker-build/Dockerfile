@@ -65,6 +65,7 @@ RUN if [ "${ARCH}" = "arm" -o "${ARCH}" = "arm-orin" ]; then \
     nvidia-l4t-wayland \
     nvidia-l4t-x11 \
     nvidia-l4t-firmware \
+    nvidia-l4t-camera \
     nvidia-l4t-tools && \
     ldconfig /usr/lib/aarch64-linux-gnu/tegra \
     ;fi
@@ -104,7 +105,7 @@ RUN if [ ${JETPACK_RELEASE} = "r32.7" ]; then \
         ln -fs $CXX /usr/bin/c++ \
     ;elif [ ${JETPACK_RELEASE} = "r36.4" ]; then \
         apt-get update  && \
-        apt-get install -y cuda-toolkit-12-2 tensorrt=10.3.0.30-1+cuda12.5 nvidia-l4t-dla-compiler libcudnn9-cuda-12 libcudnn9-dev-cuda-12 \
+        apt-get install -y cuda-toolkit-12-6 tensorrt=10.3.0.30-1+cuda12.5 nvidia-l4t-dla-compiler libcudnn9-cuda-12 libcudnn9-dev-cuda-12 \
     ;else \
         echo "Nothing to install" \
     ;fi
