@@ -241,7 +241,7 @@ RUN if [ "${ARCH}" = "arm" -o "${ARCH}" = "arm-orin" ]; then \
         if [ "${ARCH}" = "arm-orin" ]; then \
             export JETPACK_RELEASE="l4t36.3" && \
             export ZED_SDK_MAJOR=5 && \
-            export ZED_SDK_MINOR=1; \
+            export ZED_SDK_MINOR=2; \
         else \
             export JETPACK_RELEASE="l4t32.7" && \
             export ZED_SDK_MAJOR=4 && \
@@ -252,21 +252,24 @@ RUN if [ "${ARCH}" = "arm" -o "${ARCH}" = "arm-orin" ]; then \
         wget -q --no-check-certificate -O ZED_SDK_Linux.run https://download.stereolabs.com/zedsdk/${ZED_SDK_MAJOR}.${ZED_SDK_MINOR}/${JETPACK_RELEASE}/jetsons && \
         chmod +x ZED_SDK_Linux.run && \
         ./ZED_SDK_Linux.run silent skip_tools skip_drivers && \
-        rm -rf /usr/local/zed/resources/* \
+        chmod -R a+rX /usr/local/zed && \
+        rm -rf /usr/local/zed/resources/* && \
         rm -rf ZED_SDK_Linux.run && \
         rm -rf /var/lib/apt/lists/* && \
         #This symbolic link is needed to use the streaming features on Jetson inside a container \
         ln -sf /usr/lib/aarch64-linux-gnu/tegra/libv4l2.so.0 /usr/lib/aarch64-linux-gnu/libv4l2.so; \
     elif [ "${ARCH}" = "x86" ]; then \
         export ZED_SDK_MAJOR=5 && \
-        export ZED_SDK_MINOR=1 && \
+        export ZED_SDK_MINOR=2 && \
         export UBUNTU_RELEASE_YEAR=22 ; \
         export CUDA_MAJOR=12 ; \
         apt-get update -y || true ; apt-get install --no-install-recommends lsb-release zstd libpng-dev libgomp1 -y ; \
         #python3 -m pip install --upgrade pip ; \
         python3 -m pip install numpy opencv-python ; \
         wget -q -O ZED_SDK_Linux_Ubuntu${UBUNTU_RELEASE_YEAR}.run https://download.stereolabs.com/zedsdk/${ZED_SDK_MAJOR}.${ZED_SDK_MINOR}/cu${CUDA_MAJOR}/ubuntu${UBUNTU_RELEASE_YEAR} && \
-        chmod +x ZED_SDK_Linux_Ubuntu${UBUNTU_RELEASE_YEAR}.run ; ./ZED_SDK_Linux_Ubuntu${UBUNTU_RELEASE_YEAR}.run -- silent skip_tools skip_cuda && \
+        chmod +x ZED_SDK_Linux_Ubuntu${UBUNTU_RELEASE_YEAR}.run && \
+        ./ZED_SDK_Linux_Ubuntu${UBUNTU_RELEASE_YEAR}.run -- silent skip_tools skip_cuda && \
+        chmod -R a+rX /usr/local/zed && \
         ln -sf /lib/x86_64-linux-gnu/libusb-1.0.so.0 /usr/lib/x86_64-linux-gnu/libusb-1.0.so && \
         rm ZED_SDK_Linux_Ubuntu${UBUNTU_RELEASE_YEAR}.run && \
         rm -rf /var/lib/apt/lists/*; \
